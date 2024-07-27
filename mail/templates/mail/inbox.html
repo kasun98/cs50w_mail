@@ -1,0 +1,70 @@
+{% extends "mail/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <h2>{{ request.user.email }}</h2>
+
+    <button type="button" class="btn btn-outline-success" id="inbox">Inbox</button>
+    <button type="button" class="btn btn-outline-success" id="compose">Compose</button>
+    <button type="button" class="btn btn-outline-success" id="sent">Sent</button>
+    <button type="button" class="btn btn-outline-success" id="archived">Archived</button>
+    <a class="btn btn-outline-danger" href="{% url 'logout' %}">Log Out</a>
+    <hr>
+
+    <div id="emails-view">
+    </div>
+    
+    <div id="compose-view">
+        <h3 style="font-family: cursive;">New Email</h3>
+        <form id="compose-form">
+            <div class="form-group">
+                From: <input disabled class="form-control" value="{{ request.user.email }}">
+            </div>
+            <div class="form-group">
+                To: <input id="compose-recipients" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <input class="form-control" id="compose-subject" placeholder="Subject">
+            </div>
+            <textarea class="form-control" id="compose-body" placeholder="Body"></textarea>
+            <button id="send" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Send</button>
+        </form>
+    </div>
+
+    <div id="container"></div>
+
+    <div id="open_email">
+        <a class="open_email_a">From : <a style="padding-left: 5px;" id="from"></a></a><br>
+        <a class="open_email_a">To : <a style="padding-left: 5px;" id="to"></a></a><br>
+        <a class="open_email_a">Subject : <a style="padding-left: 5px;" id="subject"></a></a><br>
+        <a class="open_email_a">Timestamp : <a style="padding-left: 5px;" id="timestamp"></a></a><br>
+        <button hidden=false class="btn btn-sm btn-outline-primary" id="reply">Reply</button>
+        <button hidden class="btn btn-sm btn-outline-secondary" id="arch"></button>
+        <hr>
+        <p class="open_mail_p"></p>
+    </div>
+
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modalMessage">
+                <!-- Popup message will be inserted here -->
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'mail/inbox.js' %}"></script>
+{% endblock %}
